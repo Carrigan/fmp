@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, ops::Index};
 use itertools::Itertools;
 
 use yaml_rust::Yaml;
@@ -71,9 +71,19 @@ fn condense_keys(hashes: &Vec<HashMap<String, String>>) -> Vec<String> {
             hash.keys().map(|k| k.clone())
         });
 
-    Iterator::flatten(mapped)
+    let mut sorted: Vec<String> = Iterator::flatten(mapped)
         .unique()
-        .collect()
+        .collect();
+
+    sorted.sort();
+
+    // Move `date` to front
+    if let Some(date_index) = sorted.iter().position(|p| p == "date") {
+        let date = sorted.remove(date_index);
+        sorted.insert(0, date);
+    }
+
+    sorted
 }
 
 pub fn flatten_yaml(prefix: Option<String>, yaml: &Yaml) -> Option<Vec<(String, String)>> {
