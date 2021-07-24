@@ -8,6 +8,12 @@ pub struct Date {
     pub day: u8
 }
 
+impl ToString for Date {
+    fn to_string(&self) -> String {
+        format!("{:02}{:02}{:02}", self.year, self.month, self.day)
+    }
+}
+
 impl Date {
     pub fn from_filename(filename: &str) -> Option<Date> {
         let filename_regex = Regex::new(r"^(\d{6})").ok()?;

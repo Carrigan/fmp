@@ -4,9 +4,9 @@ use super::Regex;
 
 #[derive(Debug)]
 pub struct Frontmatter {
-    path: String,
-    yaml: yaml_rust::yaml::Yaml,
-    date: Date
+    pub path: String,
+    pub yaml: yaml_rust::yaml::Yaml,
+    pub date: Date
 }
 
 impl Frontmatter {
