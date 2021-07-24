@@ -1,7 +1,9 @@
+use std::cmp::Ordering;
+
 use super::yaml_rust::{Yaml};
 use super::Regex;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Date {
     pub year: u8,
     pub month: u8,
@@ -11,6 +13,36 @@ pub struct Date {
 impl ToString for Date {
     fn to_string(&self) -> String {
         format!("{:02}{:02}{:02}", self.year, self.month, self.day)
+    }
+}
+
+impl Ord for Date {
+    fn cmp(&self, other: &Self) -> Ordering {
+        if other.year < self.year {
+            return Ordering::Greater;
+        } else if other.year > self.year {
+            return Ordering::Less;
+        }
+
+        if other.month < self.month {
+            return Ordering::Greater;
+        } else if other.month > self.month {
+            return Ordering::Less;
+        }
+
+        if other.day < self.day {
+            return Ordering::Greater;
+        } else if other.day > self.day {
+            return Ordering::Less;
+        }
+
+        Ordering::Equal
+    }
+}
+
+impl PartialOrd for Date {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
     }
 }
 

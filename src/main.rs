@@ -18,12 +18,15 @@ fn main() {
     fixtures.push("fixtures");
 
     // Collect Frontmatters
-    let fms: Vec<Frontmatter> = fs::read_dir(fixtures).unwrap()
+    let mut fms: Vec<Frontmatter> = fs::read_dir(fixtures).unwrap()
         .filter_map(|entry| {
             let path = entry.unwrap().path();
             Frontmatter::load(&path)
         })
         .collect();
+
+    // Sort frontmatters by date
+    fms.sort_by(|a, b| a.date.cmp(&b.date));
 
     // Process them to CSV
     let fmps = to_csv(&fms);
