@@ -1,4 +1,5 @@
 use std::{fs, path::PathBuf};
+
 use super::Date;
 use super::Regex;
 
@@ -36,6 +37,10 @@ impl Frontmatter {
         let path_string = String::from(path.to_str()?);
 
         Some(Frontmatter { path: path_string, yaml, date })
+    }
+
+    pub fn contains_data(&self) -> bool {
+        self.yaml.as_hash().unwrap().keys().filter(|&k| k.as_str().unwrap() != "date").count() > 0
     }
 
     fn extract_from_md(text: &str) -> Option<String> {
